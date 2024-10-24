@@ -48,30 +48,21 @@
     </div>
   </div>
 
+  <div class="form-group mt-4 text-center"> <!-- Ajout de text-center pour centrer le contenu -->
+    <label for="verificationCode">Entrez le code de vérification :</label>
+    <br>
+    <canvas #captchaCanvas class="captcha-canvas"></canvas> <!-- Ajoutez une classe pour styliser le canvas -->
+    <input type="text" id="verificationCode" [(ngModel)]="userInputCode" class="form-control" required>
+    <div *ngIf="userInputCode !== randomCode && userInputCode !== ''" class="text-danger">
+      Le code est incorrect.
+    </div>
+  </div>
+
+
+
+
   <form (ngSubmit)="sendRequest()" #myForm="ngForm" class="mt-4">
     <!-- Les autres champs du formulaire -->
-
-    <!-- Simulated reCAPTCHA "Je ne suis pas un robot" -->
-    <div class="form-group mt-3">
-      <div class="fake-recaptcha">
-        <div class="fake-recaptcha-checkbox" [class.loading]="isLoading">
-          <input type="checkbox" class="form-check-input" id="notRobot" name="notRobot" [(ngModel)]="isNotRobot" (change)="simulateVerification()" required>
-
-        </div>
-        <div class="fake-recaptcha-text">
-          <label class="form-check-label recaptcha-text-label" for="notRobot">Je ne suis pas un robot</label>
-          <img src="https://www.gstatic.com/recaptcha/api2/logo_48.png" alt="reCAPTCHA logo" class="recaptcha-logo">
-        </div>
-        <div class="recaptcha-footer">
-          <small class="recaptcha-small-text">reCAPTCHA</small>
-          <a href="https://policies.google.com/privacy" class="recaptcha-terms">Confidentialité</a> -
-          <a href="https://policies.google.com/terms" class="recaptcha-terms">Conditions</a>
-        </div>
-      </div>
-      <div *ngIf="captchaError" class="text-danger mt-1">
-        Veuillez cocher la case "Je ne suis pas un robot" pour continuer.
-      </div>
-    </div>
 
     <!-- Case à cocher pour accepter les termes et conditions -->
     <div class="form-check mt-3">
@@ -100,11 +91,44 @@
 
 
 
-  <div class="text-center mt-4">
-    <a href="https://calendly.com/your-link" target="_blank" class="btn btn-warning">
+
+  <!-- Button to open the modal -->
+<div class="text-center mt-4">
+  <button class="btn btn-warning" (click)="openModal()">
       <i class="fa fa-calendar" aria-hidden="true"></i> Prenez un rendez-vous
-    </a>
+  </button>
+</div>
+
+<!-- Modal -->
+<div class="modal" tabindex="-1" role="dialog" [ngClass]="{'show': isModalOpen}" style="display: {{isModalOpen ? 'block' : 'none'}}">
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">Prendre un rendez-vous 😉</h5>
+      <button type="button" class="close" (click)="closeModal()">
+        <span>&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <label for="date">Choisissez une date et une heure :</label>
+      <input type="datetime-local" id="date" [(ngModel)]="appointment.date" class="form-control">
+
+      <label for="phone">Votre numéro de téléphone :</label>
+      <input type="tel" id="phone" [(ngModel)]="appointment.phone" class="form-control">
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="confirmAppointment()">Confirmer</button>
+      <button type="button" class="btn btn-secondary" (click)="closeModal()">Annuler</button>
+    </div>
   </div>
+</div>
+</div>
+
+<!-- Confirmation Message -->
+<div *ngIf="confirmationMessage" class="alert alert-success mt-4">
+  {{ confirmationMessage }}
+</div>
+
 
   <div id="confirmation" class="confirmation mt-4" *ngIf="confirmationVisible">
     Merci pour votre demande. Nos équipes vont vous contacter au plus vite.
@@ -113,5 +137,24 @@
     <a href="https://calendly.com/votre-lien-calendly">Prendre rendez-vous</a>
   </div>
 </div>
+
+
+<!-- Bannière d'acceptation des cookies -->
+<div *ngIf="!cookiesAccepted" class="cookie-banner">
+  <p>Nous utilisons des cookies pour améliorer votre expérience. En continuant à naviguer sur notre site, vous acceptez notre politique de cookies.</p>
+  <div class="cookie-buttons">
+    <button (click)="acceptCookies()">Accepter</button>
+    <button (click)="rejectCookies()">Annuler</button>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
 
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>

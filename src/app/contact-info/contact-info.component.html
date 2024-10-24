@@ -51,6 +51,7 @@
     </div>
 
     <div class="form-row">
+      <!-- Champ Adresse -->
       <div class="form-group col-md-6">
         <label for="address">Adresse : <span class="required">*</span></label>
         <div class="input-icon">
@@ -59,25 +60,45 @@
         </div>
         <small class="text-danger" *ngIf="!address && submitted">Ce champ est requis</small>
       </div>
-
+    
+      <!-- Champ Code Postal -->
       <div class="form-group col-md-6">
         <label for="postalCode">Code Postal : <span class="required">*</span></label>
         <div class="input-icon">
           <i class="fa fa-map"></i>
-          <input type="text" class="form-control" id="postalCode" [(ngModel)]="postalCode" name="postalCode" required>
+          <input type="text" class="form-control" id="postalCode" [(ngModel)]="postalCode" name="postalCode" required (input)="filterPostalCodes()" placeholder="Entrez un code postal">
+          <ul *ngIf="filteredPostalCodes.length > 0" class="postal-code-list">
+            <li *ngFor="let code of filteredPostalCodes" (click)="selectPostalCode(code)">{{ code }}</li>
+          </ul>
         </div>
         <small class="text-danger" *ngIf="!postalCode && submitted">Ce champ est requis</small>
       </div>
     </div>
+    
 
     <div class="form-group">
       <label for="city">Ville: <span class="required">*</span></label>
       <div class="input-icon">
         <i class="fa fa-map-marker"></i>
-        <input type="text" id="city" [(ngModel)]="city" name="city" required class="form-control" />
+        <input 
+          type="text" 
+          id="city" 
+          [(ngModel)]="city" 
+          name="city" 
+          required 
+          class="form-control" 
+          (input)="filterCities()" 
+          placeholder="Entrez une ville" 
+        />
+        <ul *ngIf="filteredCities.length > 0" class="city-list">
+          <li *ngFor="let city of filteredCities" (click)="selectCity(city)">
+            {{ city }}
+          </li>
+        </ul>
       </div>
       <small class="text-danger" *ngIf="!city && submitted">Ce champ est requis</small>
     </div>
+    
 
     <div class="form-check mt-3">
       <input class="form-check-input" type="checkbox" id="parkingAddress" [(ngModel)]="parkingAddress" name="parkingAddress">

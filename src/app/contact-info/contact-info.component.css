@@ -128,3 +128,51 @@ textarea.form-control:focus {
         margin: 10px 0;
     }
 }
+
+
+.city-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    max-height: 200px; /* Limite la hauteur de la liste */
+    overflow-y: auto; /* Défilement si nécessaire */
+    z-index: 1000;
+  }
+  
+  .city-list li {
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .city-list li:hover {
+    background-color: #f0f0f0; /* Changer la couleur au survol */
+  }
+  
+
+
+
+  .postal-code-list {
+    list-style-type: none;
+    padding-left: 0;
+    margin-top: 5px;
+    background-color: white;
+    border: 1px solid #ccc;
+    max-height: 150px;
+    overflow-y: auto;
+    position: absolute;
+    z-index: 1000;
+  }
+  
+  .postal-code-list li {
+    padding: 5px;
+    cursor: pointer;
+  }
+  
+  .postal-code-list li:hover {
+    background-color: #f1f1f1;
+  }
+  
